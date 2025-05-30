@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gemini 2.5 Flash Preview 05-20</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h3>Gemini 2.5 Flash Preview</h3>
+
+      <input
+        type="password"
+        id="apiKey"
+        placeholder="Enter your Gemini API key"
+      />
+
+      <div class="button-row">
+        <button id="saveKey">Save Key</button>
+        <button id="clearKey" class="secondary">Clear Key</button>
+      </div>
+
+      <div class="settings-row">
+        <label for="temperature">Creativity:</label>
+        <input
+          type="range"
+          id="temperature"
+          min="0"
+          max="1"
+          step="0.1"
+          value="0.9"
+        />
+        <span class="temp-value" id="tempValue">0.9</span>
+      </div>
+
+      <div id="messages"></div>
+
+      <textarea id="prompt" placeholder="Enter your prompt here..."></textarea>
+      <button id="submit">Get Gemini Response</button>
+
+      <div id="response"></div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
