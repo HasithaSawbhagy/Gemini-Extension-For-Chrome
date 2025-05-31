@@ -1,139 +1,237 @@
-/* Default Dark Theme Variables */
+/* ====== ROOT & THEME VARIABLES ====== */
 :root {
-  --bg-primary: #1a1a2e;
-  --bg-secondary: #16213e;
-  --bg-tertiary: #0f3460;
-  --text-primary: #e0e0ff;
-  --text-secondary: #a0a0c0;
-  --accent-color: #7f5af0;
-  --accent-hover: #6c4bd1;
-  --success-color: #2cb67d;
-  --error-color: #f25f5c;
-  --info-color: #4cc9f0;
-  --border-color: #2d3748;
-  --input-bg: #16213e; /* Specific for dark inputs */
-  --input-text: #e0e0ff;
-  --code-bg: #1e1e2e;
-  --code-text: #f8f8f2;
-  --button-secondary-hover-bg: #1a2a4a;
-  --history-item-hover-bg: var(--accent-color);
-  --history-item-hover-text: white;
-  --history-time-color: var(--text-secondary);
-  --history-item-hover-time-color: white;
-  --scrollbar-track-bg: var(--bg-primary);
-  --scrollbar-thumb-bg: var(--bg-tertiary);
-  --scrollbar-thumb-hover-bg: var(--accent-color);
-  --icon-btn-color: var(--text-secondary);
-  --icon-btn-hover-bg: var(--bg-tertiary);
-  --icon-btn-hover-color: var(--text-primary);
-
-  --font-main: 'Inter', sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
-}
-
-/* Light Theme Variables */
-[data-theme="light"] {
-  --bg-primary: #f4f7f6; /* Lighter grey */
-  --bg-secondary: #ffffff; /* White */
-  --bg-tertiary: #e9ecef; /* Light grey */
-  --text-primary: #212529; /* Dark grey/black */
-  --text-secondary: #6c757d; /* Medium grey */
-  --accent-color: #6200ea; /* Purple */
-  --accent-hover: #5200c7; /* Darker purple */
-  --success-color: #198754; /* Green */
-  --error-color: #dc3545;   /* Red */
-  --info-color: #0dcaf0;    /* Cyan */
-  --border-color: #dee2e6;  /* Light border */
-  --input-bg: #ffffff;
-  --input-text: #212529;
-  --code-bg: #f8f9fa;      /* Very light grey for code */
+  /* Light Theme (Default) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --accent-color: #007bff;
+  --accent-hover: #0056b3;
+  --accent-text-color: #ffffff;
+  --success-color: #198754;
+  --error-color: #dc3545;
+  --info-color: #0dcaf0;
+  --info-text-color: #000;
+  --code-bg: #f1f3f5;
   --code-text: #212529;
-  --button-secondary-hover-bg: #d3d9df;
-  --history-item-hover-bg: var(--accent-color);
-  --history-item-hover-text: white;
+  --icon-color: var(--text-secondary); /* Default icon color */
+  --icon-hover-color: var(--text-primary);
+  --primary-btn-icon-color: var(--accent-text-color); /* Icon color on primary buttons */
+  --history-item-hover-bg: #e9ecef;
+  --history-item-hover-text: var(--text-primary);
   --history-time-color: var(--text-secondary);
-  --history-item-hover-time-color: white; /* Keep white on accent hover */
-  --scrollbar-track-bg: var(--bg-primary);
-  --scrollbar-thumb-bg: #ced4da; /* Light grey thumb */
-  --scrollbar-thumb-hover-bg: var(--accent-color);
-  --icon-btn-color: var(--text-secondary);
-  --icon-btn-hover-bg: var(--bg-tertiary);
-  --icon-btn-hover-color: var(--text-primary);
+  --scrollbar-track-bg: var(--bg-secondary);
+  --scrollbar-thumb-bg: #ced4da;
+  --scrollbar-thumb-hover-bg: #adb5bd;
 }
 
+[data-theme="dark"] {
+  --bg-primary: #212529;
+  --bg-secondary: #2c3034;
+  --bg-tertiary: #343a40;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --border-color: #495057;
+  --accent-color: #0d6efd;
+  --accent-hover: #0a58ca;
+  /* --accent-text-color: #ffffff; /* Stays same */
+  --success-color: #20c997;
+  --error-color: #fd7e14;
+  --info-color: #66d9ef;
+  /* --info-text-color: #000; /* Stays same */
+  --code-bg: #2c3034;
+  --code-text: #f8f9fa;
+  --icon-color: var(--text-secondary);
+  --icon-hover-color: var(--text-primary);
+  /* --primary-btn-icon-color: var(--accent-text-color); /* Stays same */
+  --history-item-hover-bg: #343a40;
+  --history-item-hover-text: var(--text-primary);
+  --history-time-color: var(--text-secondary);
+  --scrollbar-track-bg: var(--bg-primary);
+  --scrollbar-thumb-bg: #495057;
+  --scrollbar-thumb-hover-bg: #6c757d;
+}
 
+/* ====== GLOBAL STYLES ====== */
 body {
-  width: 420px;
+  width: 400px;
   padding: 0;
   margin: 0;
-  font-family: var(--font-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
-  transition: background-color 0.3s, color 0.3s;
+  line-height: 1.5;
+  font-size: 14px;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .container {
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
+/* ====== HEADER ====== */
 header {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Adjusted for theme button */
-  /* gap: 12px; */ /* Removed to use space-between */
-  margin-bottom: 8px;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+h1 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo { /* This is for the 🅶 character */
+  font-size: 20px;
+  color: var(--accent-color);
+  font-weight: bold;
+  /* If you wanted to use an image here instead:
+     content: url('icons/your-logo-icon.svg');
+     width: 20px; height: 20px; display: inline-block;
+  */
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-h1 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
-  display: flex;
-  align-items: center;
   gap: 8px;
-}
-
-.logo {
-  font-size: 24px;
-  color: var(--accent-color);
 }
 
 .model-badge {
   background-color: var(--bg-tertiary);
-  color: var(--accent-color);
-  padding: 4px 8px;
+  color: var(--text-secondary);
+  padding: 3px 6px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }
 
-.api-key-section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* ====== BUTTONS ====== */
+button {
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 500;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
-input, textarea, select {
+button:hover {
+  background-color: var(--bg-tertiary);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+button.primary {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--accent-text-color);
+}
+
+button.primary:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+button.primary .btn-icon {
+  color: var(--primary-btn-icon-color); /* Icon color on primary button */
+}
+
+button.secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+button.secondary:hover {
+    background-color: var(--bg-tertiary);
+}
+
+button.icon-btn { /* For buttons with only an icon */
+  padding: 6px;
+  background-color: transparent;
+  border-color: transparent;
+}
+button.icon-btn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color); /* Show border on hover for definition */
+}
+button.icon-btn .btn-icon { /* Icon inside an icon-only button */
+  color: var(--icon-color);
+  margin: 0; /* No gap if it's the only child */
+}
+button.icon-btn:hover .btn-icon {
+  color: var(--icon-hover-color);
+}
+
+
+.btn-icon { /* For Material Icons in buttons */
+  font-size: 18px; /* Adjust Material Icon size */
+  line-height: 1; /* Ensure proper vertical alignment */
+  color: inherit; /* Inherit color from button by default */
+}
+/* If icon is not the only child (i.e., has text next to it) */
+button span + .btn-icon, button .btn-icon + span {
+    /* gap is already handled by flex on button */
+}
+
+
+button:disabled, button:disabled:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+button:disabled .btn-icon {
+    opacity: 0.7;
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
+}
+.button-row button {
+  flex-grow: 1;
+}
+
+/* ====== FORMS (Input, Textarea) ====== */
+input[type="password"],
+input[type="range"],
+textarea {
   width: 100%;
-  margin-bottom: 10px;
-  padding: 12px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
   box-sizing: border-box;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 14px;
-  background-color: var(--input-bg);
-  color: var(--input-text);
-  transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] textarea {
+    background-color: var(--bg-secondary);
 }
 
 input:focus, textarea:focus {
@@ -143,337 +241,319 @@ input:focus, textarea:focus {
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 90px;
   resize: vertical;
-  line-height: 1.5;
 }
 
-.button-row {
-  display: flex;
-  gap: 8px;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-weight: 500;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-button.primary {
-  background-color: var(--accent-color);
-  color: white; /* Assuming white text is good for both light/dark accent */
-}
-
-button.primary:hover {
-  background-color: var(--accent-hover);
-}
-
-button.secondary {
-  background-color: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-button.secondary:hover {
-  background-color: var(--button-secondary-hover-bg);
-}
-
-button:disabled {
-  background-color: var(--bg-tertiary);
-  color: var(--text-secondary);
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.icon-btn {
-  background: none;
-  color: var(--icon-btn-color);
-  padding: 6px;
-  border-radius: 50%;
-}
-
-.icon-btn:hover {
-  background-color: var(--icon-btn-hover-bg);
-  color: var(--icon-btn-hover-color);
-}
-
+/* ====== SETTINGS PANEL ====== */
 .settings-panel {
   background-color: var(--bg-secondary);
-  padding: 12px;
-  border-radius: 8px;
-  transition: background-color 0.3s;
+  padding: 10px;
+  border-radius: 6px;
 }
 
 .settings-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .settings-row label {
   font-weight: 500;
+  font-size: 13px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   white-space: nowrap;
-  color: var(--text-primary);
+}
+.settings-row label .btn-icon { /* Icon inside label */
+    font-size: 18px;
+    color: var(--text-secondary);
 }
 
 .settings-row input[type="range"] {
   flex: 1;
-  height: 6px;
+  height: 4px;
+  padding: 0;
+  margin-bottom: 0;
   -webkit-appearance: none;
   background: var(--bg-tertiary);
-  border-radius: 3px;
+  border-radius: 2px;
+  border: none;
 }
 
 .settings-row input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background: var(--accent-color);
   border-radius: 50%;
   cursor: pointer;
+  border: 2px solid var(--bg-primary);
+}
+.settings-row input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--bg-primary);
 }
 
 .temp-value {
-  width: 30px;
-  text-align: center;
+  width: 25px;
+  text-align: right;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
+/* ====== MESSAGES ====== */
 #messages {
-  min-height: 24px;
+  min-height: 20px;
 }
 
 .message {
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  border-left: 3px solid;
+  margin-bottom: 8px;
 }
 
 .message.error {
-  background-color: color-mix(in srgb, var(--error-color) 15%, transparent);
+  background-color: color-mix(in srgb, var(--error-color) 10%, transparent);
   color: var(--error-color);
-  border-left: 3px solid var(--error-color);
+  border-left-color: var(--error-color);
 }
 
 .message.success {
-  background-color: color-mix(in srgb, var(--success-color) 15%, transparent);
+  background-color: color-mix(in srgb, var(--success-color) 10%, transparent);
   color: var(--success-color);
-  border-left: 3px solid var(--success-color);
+  border-left-color: var(--success-color);
 }
 
 .message.info {
   background-color: color-mix(in srgb, var(--info-color) 15%, transparent);
-  color: var(--info-color);
-  border-left: 3px solid var(--info-color);
+  color: var(--info-text-color);
+  border-left-color: var(--info-color);
 }
 
+/* ====== PROMPT & RESPONSE ====== */
 .prompt-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .submit-btn {
-  background-color: var(--accent-color);
-  color: white;
-  font-weight: 500;
-}
-
-.submit-btn:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color) 20%, transparent);
+  width: 100%;
 }
 
 .response-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .response-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 #response {
   border: 1px solid var(--border-color);
-  padding: 16px;
-  margin-top: 8px;
-  border-radius: 8px;
-  min-height: 150px;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 6px;
+  min-height: 100px;
   background-color: var(--bg-secondary);
   overflow-wrap: break-word;
-  transition: background-color 0.3s, border-color 0.3s;
+  font-size: 13px;
 }
 
 .loading {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   color: var(--text-secondary);
   font-style: italic;
+  font-size: 13px;
 }
 
 .spinner {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 2px solid var(--text-secondary);
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
+button .spinner {
+    border-color: var(--accent-text-color); /* White for primary button */
+    border-top-color: transparent;
+}
+[data-theme="dark"] button:not(.primary) .spinner {
+    border-color: var(--text-primary); /* For non-primary buttons in dark mode */
+    border-top-color: transparent;
+}
+
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-.response-text {
-  white-space: pre-wrap;
-  line-height: 1.6;
-  color: var(--text-primary);
-}
-
 .response-text pre {
   background-color: var(--code-bg);
-  padding: 12px;
-  border-radius: 8px;
+  color: var(--code-text);
+  padding: 10px;
+  border-radius: 4px;
   overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  border-left: 3px solid var(--accent-color);
-  margin: 12px 0;
-  color: var(--code-text); /* Added for text color inside pre */
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+  border: 1px solid var(--border-color);
+  margin: 8px 0;
 }
 
 .response-text code {
-  font-family: var(--font-mono);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   background-color: var(--code-bg);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 13px;
   color: var(--code-text);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+.response-text pre code {
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    font-size: 1em;
 }
 
 .response-text a {
   color: var(--accent-color);
   text-decoration: none;
 }
-
 .response-text a:hover {
   text-decoration: underline;
 }
 
+/* ====== HISTORY ====== */
 .history-section {
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .history-header {
   display: flex;
-  justify-content: space-between; /* Added to align items */
-  align-items: center; /* Added to align items */
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
 .history-section h3 {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 8px; /* Kept for spacing */
-  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
 }
 
 #historyItems {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
 .history-item {
-  background-color: var(--bg-tertiary);
-  padding: 12px;
-  border-radius: 8px;
+  background-color: var(--bg-secondary);
+  padding: 8px 10px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s;
-  display: flex; /* Added for better alignment of delete button */
-  justify-content: space-between; /* Added */
-  align-items: center; /* Added */
+  transition: background-color 0.15s, color 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border-color);
 }
 
 .history-item:hover {
   background-color: var(--history-item-hover-bg);
   color: var(--history-item-hover-text);
+  border-color: color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .history-content {
-  flex-grow: 1; /* Allow content to take available space */
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 .history-prompt {
   font-weight: 500;
-  margin-bottom: 4px;
-  /* color will be inherited or set by history-item:hover */
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
 }
 
 .history-time {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--history-time-color);
-  opacity: 0.8;
 }
-
 .history-item:hover .history-time {
-  color: var(--history-item-hover-time-color); /* Ensure time color changes on hover */
+    color: inherit;
 }
 
-.history-item .delete-history {
-  background: none;
-  border: none;
-  color: var(--text-secondary); /* Default color */
-  padding: 4px; /* Small padding for click area */
-  margin-left: 8px; /* Space from content */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.history-item .delete-history { /* This is an icon-btn */
+  margin-left: 8px;
+  flex-shrink: 0;
 }
-
-.history-item:hover .delete-history {
-  color: var(--history-item-hover-text); /* Match hover text color */
-}
-.history-item .delete-history:hover {
-  background-color: color-mix(in srgb, var(--history-item-hover-text) 20%, transparent); /* Slight background on hover */
+.history-item .delete-history .btn-icon {
+    font-size: 18px; /* Match other icons */
 }
 
 
+/* ====== SCROLLBARS ====== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-track-bg);
+  border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb-bg);
-  border-radius: 4px;
+  border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover-bg);
+}
+
+/* Ensure Material Icons font is loaded */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  /* font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }

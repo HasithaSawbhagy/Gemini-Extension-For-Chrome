@@ -1,94 +1,92 @@
 document.addEventListener("DOMContentLoaded", async () => {
   await initExtension();
   setupEventListeners();
-  await initTheme(); // Initialize theme
+  await initTheme();
 });
 
 const CONFIG = {
   model: "gemini-2.5-flash-preview-05-20",
   defaultTemp: 0.7,
   maxHistory: 10,
-  themes: ["system", "light", "dark"], // Available themes
-  themeIcons: { // Icons for each theme state
-    system: "brightness_auto",
+  themes: ["system", "light", "dark"],
+  themeMaterialIcons: { // Material Icon names for theme toggle
+    system: "brightness_auto", // Or a more specific system/auto icon
     light: "light_mode",
     dark: "dark_mode",
-  }
+  },
+  // No longer need iconPaths for local files
 };
 
 let conversationHistory = [];
-let currentTheme = "system"; // Default theme
+let currentTheme = "system"; // Default: follow system
 
 async function initTheme() {
   const storedTheme = await chrome.storage.sync.get("theme");
   if (storedTheme.theme && CONFIG.themes.includes(storedTheme.theme)) {
     currentTheme = storedTheme.theme;
   }
-  applyTheme(currentTheme);
-  updateThemeButtonIcon();
+  applyTheme(currentTheme); // This will set data-theme and update button icon
 
-  // Listen for system theme changes if current theme is 'system'
+  // Listen for system theme changes if current theme preference is 'system'
   if (currentTheme === "system") {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       if (document.documentElement.getAttribute('data-theme-preference') === 'system') {
         applySystemTheme();
-        updateThemeButtonIcon(); // Keep icon as 'system'
+        // Theme button icon should remain as 'system' icon, title will update
+        updateThemeButtonIcon();
       }
     });
   }
 }
 
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme-preference', theme);
-  if (theme === "light") {
-    document.documentElement.setAttribute("data-theme", "light");
-  } else if (theme === "dark") {
-    document.documentElement.removeAttribute("data-theme"); // Or set to "dark" if you have specific dark styles beyond :root
+function applyTheme(themePreference) {
+  document.documentElement.setAttribute('data-theme-preference', themePreference);
+  currentTheme = themePreference; // Update global currentTheme
+
+  if (themePreference === "light") {
+    document.documentElement.removeAttribute("data-theme"); // Uses :root default (light)
+  } else if (themePreference === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
   } else { // System theme
     applySystemTheme();
   }
   updateThemeButtonIcon();
+  chrome.storage.sync.set({ theme: themePreference });
 }
 
 function applySystemTheme() {
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    document.documentElement.removeAttribute("data-theme"); // Use default (dark)
+    document.documentElement.setAttribute("data-theme", "dark");
   } else {
-    document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.removeAttribute("data-theme"); // Default to light as per :root
   }
 }
 
 function updateThemeButtonIcon() {
+  const themeIconSpan = document.getElementById("themeIcon"); // Get the span
   const themeToggleBtn = document.getElementById("themeToggleBtn");
-  if (themeToggleBtn) {
-    const iconSpan = themeToggleBtn.querySelector("span.material-icons");
-    let effectiveTheme = currentTheme;
+
+  if (themeIconSpan && themeToggleBtn) {
+    themeIconSpan.textContent = CONFIG.themeMaterialIcons[currentTheme]; // Set Material Icon name
+
+    let effectiveThemeDisplay = currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1);
     if (currentTheme === "system") {
-        effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+        effectiveThemeDisplay = `System (${window.matchMedia('(prefers-color-scheme: dark)').matches ? "Dark" : "Light"})`;
     }
-    // Set title based on the *next* theme for better UX
     let nextThemeIndex = (CONFIG.themes.indexOf(currentTheme) + 1) % CONFIG.themes.length;
-    let nextTheme = CONFIG.themes[nextThemeIndex];
-    let nextThemeLabel = nextTheme.charAt(0).toUpperCase() + nextTheme.slice(1);
+    let nextThemeName = CONFIG.themes[nextThemeIndex];
+    nextThemeName = nextThemeName.charAt(0).toUpperCase() + nextThemeName.slice(1);
 
-
-    if (iconSpan) {
-      iconSpan.textContent = CONFIG.themeIcons[currentTheme]; // Icon reflects current *preference*
-      themeToggleBtn.title = `Switch to ${nextThemeLabel} Theme (Current: ${currentTheme === 'system' ? `System - ${effectiveTheme}` : currentTheme})`;
-    }
+    themeToggleBtn.title = `Switch to ${nextThemeName} Theme (Current: ${effectiveThemeDisplay})`;
   }
 }
-
 
 async function toggleTheme() {
   let currentIndex = CONFIG.themes.indexOf(currentTheme);
   currentIndex = (currentIndex + 1) % CONFIG.themes.length;
-  currentTheme = CONFIG.themes[currentIndex];
-  
-  applyTheme(currentTheme);
-  await chrome.storage.sync.set({ theme: currentTheme });
+  const newTheme = CONFIG.themes[currentIndex];
+  applyTheme(newTheme);
 }
-
 
 async function initExtension() {
   const { apiKey, temperature, history } = await chrome.storage.sync.get([
@@ -120,8 +118,8 @@ function setupEventListeners() {
     .getElementById("temperature")
     .addEventListener("change", handleTempChange);
   document.getElementById("prompt").addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { // Allow Cmd+Enter on Mac
-        e.preventDefault(); // Prevent new line in textarea
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
         handleSubmit();
     }
   });
@@ -133,7 +131,6 @@ function setupEventListeners() {
     .getElementById("clearHistory")
     .addEventListener("click", clearHistory);
 
-  // Theme toggle button event listener
   const themeToggleBtn = document.getElementById("themeToggleBtn");
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", toggleTheme);
@@ -150,17 +147,14 @@ async function handleSaveKey() {
 
   await chrome.storage.sync.set({ apiKey });
   showMessage("API key saved successfully!", "success");
-  document.getElementById("saveKey").textContent = "Update Key";
-  document.getElementById("saveKey").innerHTML = `<span class="material-icons">key</span> <span>Update Key</span>`;
-
+  updateSaveButton();
 }
 
 async function handleClearKey() {
   await chrome.storage.sync.remove("apiKey");
   document.getElementById("apiKey").value = "";
   showMessage("API key cleared", "info");
-  document.getElementById("saveKey").textContent = "Save Key";
-  document.getElementById("saveKey").innerHTML = `<span class="material-icons">save</span> <span>Save Key</span>`;
+  updateSaveButton();
 }
 
 async function handleTempChange() {
@@ -177,8 +171,11 @@ async function handleSubmit() {
 
   const responseDiv = document.getElementById("response");
   const submitBtn = document.getElementById("submit");
+  // const submitIconContent = document.getElementById("submitIconContent"); // For changing icon
+  const submitText = document.getElementById("submitText");
 
-  showLoadingState(responseDiv, submitBtn);
+
+  showLoadingState(responseDiv, submitBtn, submitText); // Removed icon specific param
 
   try {
     const response = await callGeminiAPI(apiKey, prompt, temperature);
@@ -194,19 +191,16 @@ async function handleSubmit() {
     console.error("API Error:", error);
   } finally {
     submitBtn.disabled = false;
-    submitBtn.innerHTML = `<span class="material-icons">send</span> <span>Get Response</span>`;
+    // Restore button content
+    submitBtn.innerHTML = `<span class="material-icons btn-icon" id="submitIconContent">send</span> <span id="submitText">Get Response</span>`;
   }
 }
 
 async function callGeminiAPI(apiKey, prompt, temperature) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.model}:generateContent?key=${apiKey}`;
-
-  // Include only the last 3 *pairs* of user prompt and model response for context
   const contextualHistory = [];
-  // Iterate backwards to get the most recent history items
   for (let i = conversationHistory.length - 1; i >= 0 && contextualHistory.length < (3*2) ; i--) {
     const item = conversationHistory[i];
-    // Add model's response first (if it exists) then user's prompt
     if (item.response) {
       contextualHistory.unshift({ role: "model", parts: [{ text: item.response }] });
     }
@@ -215,9 +209,8 @@ async function callGeminiAPI(apiKey, prompt, temperature) {
     }
   }
 
-
   const messages = [
-    ...contextualHistory, // Add processed history
+    ...contextualHistory,
     {
       role: "user",
       parts: [{ text: prompt }],
@@ -234,7 +227,7 @@ async function callGeminiAPI(apiKey, prompt, temperature) {
         topP: 1,
         topK: 40,
         maxOutputTokens: 4096,
-        stopSequences: [], // Removed "</response>" as it might be too restrictive or specific
+        stopSequences: [],
       },
       safetySettings: [
         { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
@@ -247,15 +240,13 @@ async function callGeminiAPI(apiKey, prompt, temperature) {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    // Check for specific Gemini error structure
     if (errorData.error && errorData.error.message) {
         throw new Error(errorData.error.message);
-    } else if (errorData.message) { // General error message
+    } else if (errorData.message) {
         throw new Error(errorData.message);
     }
     throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
-
   return response.json();
 }
 
@@ -265,30 +256,25 @@ function saveToHistory(prompt, response) {
     prompt,
     response,
   });
-
   if (conversationHistory.length > CONFIG.maxHistory) {
     conversationHistory.shift();
   }
-
   chrome.storage.sync.set({ history: conversationHistory });
   updateHistoryUI();
 }
 
 async function copyToClipboard() {
   const responseDiv = document.getElementById("response");
-  // Get text content, handling potential HTML within the response
   let textToCopy = "";
   if (responseDiv.querySelector(".response-text")) {
       textToCopy = responseDiv.querySelector(".response-text").innerText;
   } else {
       textToCopy = responseDiv.innerText;
   }
-
   if (!textToCopy.trim()) {
     showMessage("Nothing to copy", "info");
     return;
   }
-
   try {
     await navigator.clipboard.writeText(textToCopy);
     showMessage("Copied to clipboard!", "success");
@@ -302,72 +288,50 @@ async function clearHistory() {
   conversationHistory = [];
   await chrome.storage.sync.remove("history");
   updateHistoryUI();
-  // Optionally clear the current response display
-  // document.getElementById("response").innerHTML = "";
   showMessage("History cleared", "info");
 }
 
 function displayResponse(responseText) {
   const responseDiv = document.getElementById("response");
-  // Sanitize the responseText before setting it as innerHTML to prevent XSS
-  // For markdown, we need to be careful. A dedicated library like DOMPurify + Marked.js would be safer
-  // For now, using the existing formatResponseText and hoping it's relatively safe for typical Gemini output
   responseDiv.innerHTML = `<div class="response-text">${formatResponseText(
     responseText
   )}</div>`;
 }
 
 function formatResponseText(text) {
-  // Basic Markdown-like formatting
-  // Order matters for replacements
   let html = text;
-
-  // Code blocks (```lang\ncode\n```)
   html = html.replace(/```(\w*)\n([\s\S]*?)\n```/g, (match, lang, code) => {
       const languageClass = lang ? `language-${lang}` : '';
-      // Basic HTML escaping for content within code blocks
       const escapedCode = code.replace(/</g, "<").replace(/>/g, ">");
       return `<pre><code class="${languageClass}">${escapedCode}</code></pre>`;
   });
-
-  // Inline code (`code`)
   html = html.replace(/`([^`]+?)`/g, (match, code) => {
     const escapedCode = code.replace(/</g, "<").replace(/>/g, ">");
     return `<code>${escapedCode}</code>`;
   });
-
-  // Bold (**text**)
   html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  // Italics (*text*)
   html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-
-  // Headings (###, ##, #) - Process larger headings first
   html = html.replace(/^### (.*$)/gm, "<h6>$1</h6>");
   html = html.replace(/^## (.*$)/gm, "<h5>$1</h5>");
   html = html.replace(/^# (.*$)/gm, "<h4>$1</h4>");
-
-  // Links ([text](url))
   html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-
-  // Newlines (preserve them, then convert double newlines to <br><br>)
-  // Browsers usually collapse multiple spaces, so pre-wrap in CSS is important.
-  // This handles explicit paragraph breaks.
   html = html.replace(/\n\n/g, "<br><br>");
-  // html = html.replace(/\n/g, "<br>"); // If single newlines should also be <br>
-
   return html;
 }
 
-
 function showMessage(message, type) {
   const messageDiv = document.getElementById("messages");
-  messageDiv.innerHTML = `<div class="message ${type}">${message}</div>`;
+  messageDiv.innerHTML = ""; // Clear previous
+  const messageElement = document.createElement('div');
+  messageElement.className = `message ${type}`;
+  messageElement.textContent = message;
+  messageDiv.appendChild(messageElement);
 
   setTimeout(() => {
-    if (messageDiv.innerHTML.includes(message)) { // Clear only if it's the same message
-        messageDiv.innerHTML = "";
+    if (messageElement.parentNode === messageDiv) {
+        messageDiv.removeChild(messageElement);
     }
-  }, 5000);
+  }, 4000);
 }
 
 function updateHistoryUI() {
@@ -375,23 +339,23 @@ function updateHistoryUI() {
   if (!historyContainer) return;
 
   historyContainer.innerHTML = conversationHistory
-    .slice() // Create a copy before reversing
-    .reverse() // Show newest first
+    .slice()
+    .reverse()
     .map(
       (item, indexInReversedArray) => {
-        const originalIndex = conversationHistory.length - 1 - indexInReversedArray; // Calculate original index
+        const originalIndex = conversationHistory.length - 1 - indexInReversedArray;
         return `
-      <div class="history-item" data-index="${originalIndex}" title="Click to load. Prompt: ${item.prompt.substring(0,100)}...">
+      <div class="history-item" data-index="${originalIndex}" title="Load: ${item.prompt.substring(0,100)}">
         <div class="history-content">
-          <div class="history-prompt">${item.prompt.substring(0, 50)}${
-            item.prompt.length > 50 ? "..." : ""
+          <div class="history-prompt">${item.prompt.substring(0, 40)}${
+            item.prompt.length > 40 ? "..." : ""
           }</div>
           <div class="history-time">${new Date(
             item.timestamp
-          ).toLocaleTimeString()}</div>
+          ).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
         <button class="delete-history icon-btn" data-index="${originalIndex}" title="Delete this chat">
-          <span class="material-icons">delete_outline</span>
+          <span class="material-icons btn-icon">delete_outline</span>
         </button>
       </div>
     `;
@@ -400,18 +364,17 @@ function updateHistoryUI() {
 
   document.querySelectorAll(".delete-history").forEach((btn) => {
     btn.addEventListener("click", async (e) => {
-      e.stopPropagation(); // Prevent history item click
+      e.stopPropagation();
       const index = parseInt(btn.dataset.index);
       conversationHistory.splice(index, 1);
       await chrome.storage.sync.set({ history: conversationHistory });
       updateHistoryUI();
-      showMessage("Chat deleted from history.", "info");
+      showMessage("Chat deleted.", "info");
     });
   });
 
   document.querySelectorAll(".history-item").forEach((item) => {
     item.addEventListener("click", (e) => {
-      // Ensure the click is not on the delete button or its child span
       if (e.target.closest(".delete-history")) {
         return;
       }
@@ -431,20 +394,23 @@ function updateHistoryUI() {
   }
 }
 
-
 function updateSaveButton() {
-  const saveBtn = document.getElementById("saveKey");
+  const saveBtnText = document.getElementById("saveKeyText");
+  const saveBtnIcon = document.getElementById("saveKeyIcon"); // This is the <span> for Material Icon
   const apiKeyInput = document.getElementById("apiKey");
+
   if (apiKeyInput.value) {
-    saveBtn.innerHTML = `<span class="material-icons">key</span> <span>Update Key</span>`;
+    if (saveBtnText) saveBtnText.textContent = "Update Key";
+    if (saveBtnIcon) saveBtnIcon.textContent = "key"; // Material Icon name for 'update'
   } else {
-    saveBtn.innerHTML = `<span class="material-icons">save</span> <span>Save Key</span>`;
+    if (saveBtnText) saveBtnText.textContent = "Save Key";
+    if (saveBtnIcon) saveBtnIcon.textContent = "save"; // Material Icon name for 'save'
   }
 }
 
 function validateInputs(apiKey, prompt) {
   if (!apiKey) {
-    showMessage("API key required. Please enter your Google AI Studio API key.", "error");
+    showMessage("API key required.", "error");
     document.getElementById("apiKey").focus();
     return false;
   }
@@ -456,7 +422,7 @@ function validateInputs(apiKey, prompt) {
   return true;
 }
 
-function showLoadingState(responseDiv, submitBtn) {
+function showLoadingState(responseDiv, submitBtn, submitTextElem) {
   responseDiv.innerHTML = `
     <div class="loading">
       <div class="spinner"></div>
@@ -464,7 +430,7 @@ function showLoadingState(responseDiv, submitBtn) {
     </div>
   `;
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<div class="spinner" style="width:18px; height:18px; border-width:3px; margin-right:8px;"></div> <span>Generating...</span>`;
-}
 
-// Ensure Ctrl+Enter/Cmd+Enter submits the form (already in setupEventListeners, but good to keep in mind)
+  // Replace button content with spinner and text
+  submitBtn.innerHTML = `<div class="spinner"></div> <span>Generating...</span>`;
+}

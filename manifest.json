@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Gemini 2.5 Flash Pro",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Enhanced client for Gemini 2.5 Flash with conversation history and markdown support",
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'",

@@ -4,20 +4,18 @@
   <meta charset="UTF-8">
   <title>Gemini 2.5 Flash</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
       <h1>
-        <span class="logo">🅶</span>
-        <span>Gemini 2.5 Flash</span>
+        <span class="logo">🅶</span> <!-- This remains as is, unless you want it as an image -->
+        <span>Gemini Flash</span>
       </h1>
       <div class="header-actions">
         <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme">
-          <span class="material-icons">brightness_6</span> <!-- Default icon -->
+          <span class="material-icons" id="themeIcon">brightness_auto</span> <!-- Default icon -->
         </button>
         <div class="model-badge">Preview 05-20</div>
       </div>
@@ -27,11 +25,11 @@
       <input type="password" id="apiKey" placeholder="Enter your API key" spellcheck="false">
       <div class="button-row">
         <button id="saveKey" class="primary">
-          <span class="material-icons">save</span>
-          <span>Save Key</span>
+          <span class="material-icons btn-icon" id="saveKeyIcon">save</span>
+          <span id="saveKeyText">Save Key</span>
         </button>
         <button id="clearKey" class="secondary">
-          <span class="material-icons">clear</span>
+          <span class="material-icons btn-icon">clear</span>
           <span>Clear</span>
         </button>
       </div>
@@ -40,7 +38,7 @@
     <div class="settings-panel">
       <div class="settings-row">
         <label for="temperature">
-          <span class="material-icons">tune</span>
+          <span class="material-icons btn-icon">tune</span>
           Creativity
         </label>
         <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
@@ -51,11 +49,11 @@
     <div id="messages"></div>
 
     <div class="prompt-section">
-      <textarea id="prompt" placeholder="Ask Gemini anything... (Ctrl+Enter to submit)"
-                spellcheck="true" rows="4"></textarea>
-      <button id="submit" class="submit-btn">
-        <span class="material-icons">send</span>
-        <span>Get Response</span>
+      <textarea id="prompt" placeholder="Ask Gemini anything... (Ctrl/Cmd+Enter)"
+                spellcheck="true" rows="3"></textarea>
+      <button id="submit" class="primary submit-btn">
+        <span class="material-icons btn-icon" id="submitIconContent">send</span>
+        <span id="submitText">Get Response</span>
       </button>
     </div>
 
@@ -63,7 +61,7 @@
       <h3>Response</h3>
       <div class="response-actions">
         <button id="copyResponse" class="icon-btn" title="Copy to clipboard">
-          <span class="material-icons">content_copy</span>
+          <span class="material-icons btn-icon">content_copy</span>
         </button>
       </div>
     </div>
@@ -71,9 +69,9 @@
 
     <div class="history-section" id="historySection">
       <div class="history-header">
-        <h3>Recent Conversations</h3>
+        <h3>Recent</h3>
         <button id="clearHistory" class="icon-btn" title="Clear all history">
-          <span class="material-icons">delete_sweep</span>
+          <span class="material-icons btn-icon">delete_sweep</span>
         </button>
       </div>
       <div id="historyItems"></div>
