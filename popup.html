@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Gemini Pro</title>
+  <title>Gemini 2.5 Flash</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
@@ -15,7 +15,12 @@
         <span class="logo">🅶</span>
         <span>Gemini 2.5 Flash</span>
       </h1>
-      <div class="model-badge">Preview 05-20</div>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme">
+          <span class="material-icons">brightness_6</span> <!-- Default icon -->
+        </button>
+        <div class="model-badge">Preview 05-20</div>
+      </div>
     </header>
 
     <div class="api-key-section">
@@ -46,7 +51,7 @@
     <div id="messages"></div>
 
     <div class="prompt-section">
-      <textarea id="prompt" placeholder="Ask Gemini anything... (Ctrl+Enter to submit)" 
+      <textarea id="prompt" placeholder="Ask Gemini anything... (Ctrl+Enter to submit)"
                 spellcheck="true" rows="4"></textarea>
       <button id="submit" class="submit-btn">
         <span class="material-icons">send</span>
@@ -56,14 +61,21 @@
 
     <div class="response-header">
       <h3>Response</h3>
-      <button id="copyResponse" class="icon-btn" title="Copy to clipboard">
-        <span class="material-icons">content_copy</span>
-      </button>
+      <div class="response-actions">
+        <button id="copyResponse" class="icon-btn" title="Copy to clipboard">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
     </div>
     <div id="response"></div>
 
     <div class="history-section" id="historySection">
-      <h3>Recent Conversations</h3>
+      <div class="history-header">
+        <h3>Recent Conversations</h3>
+        <button id="clearHistory" class="icon-btn" title="Clear all history">
+          <span class="material-icons">delete_sweep</span>
+        </button>
+      </div>
       <div id="historyItems"></div>
     </div>
   </div>
