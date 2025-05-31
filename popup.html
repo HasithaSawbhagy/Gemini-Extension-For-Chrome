@@ -1,54 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Gemini 2.5 Flash Preview 05-20</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <h3>Gemini 2.5 Flash Preview</h3>
+<head>
+  <meta charset="UTF-8">
+  <title>Gemini Pro</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>
+        <span class="logo">🅶</span>
+        <span>Gemini 2.5 Flash</span>
+      </h1>
+      <div class="model-badge">Preview 05-20</div>
+    </header>
 
-      <input
-        type="password"
-        id="apiKey"
-        placeholder="Enter your Gemini API key"
-      />
-
+    <div class="api-key-section">
+      <input type="password" id="apiKey" placeholder="Enter your API key" spellcheck="false">
       <div class="button-row">
-        <button id="saveKey">Save Key</button>
-        <button id="clearKey" class="secondary">Clear Key</button>
+        <button id="saveKey" class="primary">
+          <span class="material-icons">save</span>
+          <span>Save Key</span>
+        </button>
+        <button id="clearKey" class="secondary">
+          <span class="material-icons">clear</span>
+          <span>Clear</span>
+        </button>
       </div>
-
-      <div class="settings-row">
-        <label for="temperature">Creativity:</label>
-        <input
-          type="range"
-          id="temperature"
-          min="0"
-          max="1"
-          step="0.1"
-          value="0.9"
-        />
-        <span class="temp-value" id="tempValue">0.9</span>
-      </div>
-
-      <div id="messages"></div>
-
-      <textarea id="prompt" placeholder="Enter your prompt here..."></textarea>
-      <button id="submit">Get Gemini Response</button>
-
-      <div id="response"></div>
     </div>
 
-    <script src="popup.js"></script>
-  </body>
+    <div class="settings-panel">
+      <div class="settings-row">
+        <label for="temperature">
+          <span class="material-icons">tune</span>
+          Creativity
+        </label>
+        <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7">
+        <span class="temp-value" id="tempValue">0.7</span>
+      </div>
+    </div>
+
+    <div id="messages"></div>
+
+    <div class="prompt-section">
+      <textarea id="prompt" placeholder="Ask Gemini anything... (Ctrl+Enter to submit)" 
+                spellcheck="true" rows="4"></textarea>
+      <button id="submit" class="submit-btn">
+        <span class="material-icons">send</span>
+        <span>Get Response</span>
+      </button>
+    </div>
+
+    <div class="response-header">
+      <h3>Response</h3>
+      <button id="copyResponse" class="icon-btn" title="Copy to clipboard">
+        <span class="material-icons">content_copy</span>
+      </button>
+    </div>
+    <div id="response"></div>
+
+    <div class="history-section" id="historySection">
+      <h3>Recent Conversations</h3>
+      <div id="historyItems"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
 </html>
