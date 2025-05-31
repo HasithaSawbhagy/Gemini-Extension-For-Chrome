@@ -18,7 +18,9 @@
   --code-text: #212529;
   --icon-color: var(--text-secondary); /* Default icon color */
   --icon-hover-color: var(--text-primary);
-  --primary-btn-icon-color: var(--accent-text-color); /* Icon color on primary buttons */
+  --primary-btn-icon-color: var(
+    --accent-text-color
+  ); /* Icon color on primary buttons */
   --history-item-hover-bg: #e9ecef;
   --history-item-hover-text: var(--text-primary);
   --history-time-color: var(--text-secondary);
@@ -59,7 +61,8 @@ body {
   width: 400px;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    /* Default body font */ "Helvetica Neue", Arial, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.5;
@@ -83,22 +86,35 @@ header {
 }
 
 h1 {
-  font-size: 16px;
+  font-size: 16px; /* Base size for h1, will be overridden by logoFont */
   font-weight: 600;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 6px; /* Gap between logo image and text */
 }
 
-.logo { /* This is for the 🅶 character */
-  font-size: 20px;
-  color: var(--accent-color);
-  font-weight: bold;
-  /* If you wanted to use an image here instead:
-     content: url('icons/your-logo-icon.svg');
-     width: 20px; height: 20px; display: inline-block;
-  */
+.logo {
+  /* Container for the logo image */
+  display: flex; /* To align image if needed */
+  align-items: center;
+}
+
+.logo-img {
+  width: 20px; /* Adjust size as needed */
+  height: 20px; /* Adjust size as needed */
+  object-fit: contain; /* Ensures the image scales nicely */
+}
+
+.logoFont {
+  font-family: "Audiowide", sans-serif; /* Apply Audiowide font */
+  font-weight: 400; /* As specified by the font */
+  font-style: normal;
+  font-size: 1em; /* Inherit base size from h1 or set explicitly e.g., 16px */
+  color: var(
+    --text-primary
+  ); /* Or var(--accent-color) if you want it colored */
+  line-height: 1; /* Adjust if text is not vertically centered with image */
 }
 
 .header-actions {
@@ -128,7 +144,8 @@ button {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s,
+    box-shadow 0.15s;
   background-color: var(--bg-secondary);
   color: var(--text-primary);
 }
@@ -138,7 +155,7 @@ button:hover {
 }
 
 button:active {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 button.primary {
@@ -157,15 +174,16 @@ button.primary .btn-icon {
 }
 
 button.secondary {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border-color: var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
 }
 button.secondary:hover {
-    background-color: var(--bg-tertiary);
+  background-color: var(--bg-tertiary);
 }
 
-button.icon-btn { /* For buttons with only an icon */
+button.icon-btn {
+  /* For buttons with only an icon */
   padding: 6px;
   background-color: transparent;
   border-color: transparent;
@@ -174,7 +192,8 @@ button.icon-btn:hover {
   background-color: var(--bg-tertiary);
   border-color: var(--border-color); /* Show border on hover for definition */
 }
-button.icon-btn .btn-icon { /* Icon inside an icon-only button */
+button.icon-btn .btn-icon {
+  /* Icon inside an icon-only button */
   color: var(--icon-color);
   margin: 0; /* No gap if it's the only child */
 }
@@ -182,19 +201,20 @@ button.icon-btn:hover .btn-icon {
   color: var(--icon-hover-color);
 }
 
-
-.btn-icon { /* For Material Icons in buttons */
+.btn-icon {
+  /* For Material Icons in buttons */
   font-size: 18px; /* Adjust Material Icon size */
   line-height: 1; /* Ensure proper vertical alignment */
   color: inherit; /* Inherit color from button by default */
 }
 /* If icon is not the only child (i.e., has text next to it) */
-button span + .btn-icon, button .btn-icon + span {
-    /* gap is already handled by flex on button */
+button span + .btn-icon,
+button .btn-icon + span {
+  /* gap is already handled by flex on button */
 }
 
-
-button:disabled, button:disabled:hover {
+button:disabled,
+button:disabled:hover {
   background-color: var(--bg-tertiary);
   color: var(--text-secondary);
   border-color: var(--border-color);
@@ -203,7 +223,7 @@ button:disabled, button:disabled:hover {
   transform: none;
 }
 button:disabled .btn-icon {
-    opacity: 0.7;
+  opacity: 0.7;
 }
 
 .button-row {
@@ -231,10 +251,11 @@ textarea {
 }
 [data-theme="dark"] input[type="password"],
 [data-theme="dark"] textarea {
-    background-color: var(--bg-secondary);
+  background-color: var(--bg-secondary);
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent-color);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
@@ -266,9 +287,10 @@ textarea {
   gap: 4px;
   white-space: nowrap;
 }
-.settings-row label .btn-icon { /* Icon inside label */
-    font-size: 18px;
-    color: var(--text-secondary);
+.settings-row label .btn-icon {
+  /* Icon inside label */
+  font-size: 18px;
+  color: var(--text-secondary);
 }
 
 .settings-row input[type="range"] {
@@ -392,17 +414,18 @@ textarea {
   animation: spin 0.8s linear infinite;
 }
 button .spinner {
-    border-color: var(--accent-text-color); /* White for primary button */
-    border-top-color: transparent;
+  border-color: var(--accent-text-color); /* White for primary button */
+  border-top-color: transparent;
 }
 [data-theme="dark"] button:not(.primary) .spinner {
-    border-color: var(--text-primary); /* For non-primary buttons in dark mode */
-    border-top-color: transparent;
+  border-color: var(--text-primary); /* For non-primary buttons in dark mode */
+  border-top-color: transparent;
 }
 
-
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .response-text pre {
@@ -411,14 +434,16 @@ button .spinner {
   padding: 10px;
   border-radius: 4px;
   overflow-x: auto;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
   font-size: 12px;
   border: 1px solid var(--border-color);
   margin: 8px 0;
 }
 
 .response-text code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
   background-color: var(--code-bg);
   color: var(--code-text);
   padding: 1px 4px;
@@ -426,10 +451,10 @@ button .spinner {
   font-size: 0.9em;
 }
 .response-text pre code {
-    padding: 0;
-    background-color: transparent;
-    border-radius: 0;
-    font-size: 1em;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 0;
+  font-size: 1em;
 }
 
 .response-text a {
@@ -503,17 +528,17 @@ button .spinner {
   color: var(--history-time-color);
 }
 .history-item:hover .history-time {
-    color: inherit;
+  color: inherit;
 }
 
-.history-item .delete-history { /* This is an icon-btn */
+.history-item .delete-history {
+  /* This is an icon-btn */
   margin-left: 8px;
   flex-shrink: 0;
 }
 .history-item .delete-history .btn-icon {
-    font-size: 18px; /* Match other icons */
+  font-size: 18px; /* Match other icons */
 }
-
 
 /* ====== SCROLLBARS ====== */
 ::-webkit-scrollbar {
@@ -534,7 +559,7 @@ button .spinner {
 
 /* Ensure Material Icons font is loaded */
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-weight: normal;
   font-style: normal;
   /* font-size: 24px; /* Preferred icon size */
@@ -555,5 +580,5 @@ button .spinner {
   -moz-osx-font-smoothing: grayscale;
 
   /* Support for IE. */
-  font-feature-settings: 'liga';
+  font-feature-settings: "liga";
 }

@@ -9,7 +9,8 @@ const CONFIG = {
   defaultTemp: 0.7,
   maxHistory: 10,
   themes: ["system", "light", "dark"],
-  themeMaterialIcons: { // Material Icon names for theme toggle
+  themeMaterialIcons: {
+    // Material Icon names for theme toggle
     system: "brightness_auto", // Or a more specific system/auto icon
     light: "light_mode",
     dark: "dark_mode",
@@ -29,25 +30,34 @@ async function initTheme() {
 
   // Listen for system theme changes if current theme preference is 'system'
   if (currentTheme === "system") {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (document.documentElement.getAttribute('data-theme-preference') === 'system') {
-        applySystemTheme();
-        // Theme button icon should remain as 'system' icon, title will update
-        updateThemeButtonIcon();
-      }
-    });
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (
+          document.documentElement.getAttribute("data-theme-preference") ===
+          "system"
+        ) {
+          applySystemTheme();
+          // Theme button icon should remain as 'system' icon, title will update
+          updateThemeButtonIcon();
+        }
+      });
   }
 }
 
 function applyTheme(themePreference) {
-  document.documentElement.setAttribute('data-theme-preference', themePreference);
+  document.documentElement.setAttribute(
+    "data-theme-preference",
+    themePreference
+  );
   currentTheme = themePreference; // Update global currentTheme
 
   if (themePreference === "light") {
     document.documentElement.removeAttribute("data-theme"); // Uses :root default (light)
   } else if (themePreference === "dark") {
     document.documentElement.setAttribute("data-theme", "dark");
-  } else { // System theme
+  } else {
+    // System theme
     applySystemTheme();
   }
   updateThemeButtonIcon();
@@ -55,7 +65,10 @@ function applyTheme(themePreference) {
 }
 
 function applySystemTheme() {
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
     document.documentElement.setAttribute("data-theme", "dark");
   } else {
     document.documentElement.removeAttribute("data-theme"); // Default to light as per :root
@@ -69,13 +82,20 @@ function updateThemeButtonIcon() {
   if (themeIconSpan && themeToggleBtn) {
     themeIconSpan.textContent = CONFIG.themeMaterialIcons[currentTheme]; // Set Material Icon name
 
-    let effectiveThemeDisplay = currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1);
+    let effectiveThemeDisplay =
+      currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1);
     if (currentTheme === "system") {
-        effectiveThemeDisplay = `System (${window.matchMedia('(prefers-color-scheme: dark)').matches ? "Dark" : "Light"})`;
+      effectiveThemeDisplay = `System (${
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "Dark"
+          : "Light"
+      })`;
     }
-    let nextThemeIndex = (CONFIG.themes.indexOf(currentTheme) + 1) % CONFIG.themes.length;
+    let nextThemeIndex =
+      (CONFIG.themes.indexOf(currentTheme) + 1) % CONFIG.themes.length;
     let nextThemeName = CONFIG.themes[nextThemeIndex];
-    nextThemeName = nextThemeName.charAt(0).toUpperCase() + nextThemeName.slice(1);
+    nextThemeName =
+      nextThemeName.charAt(0).toUpperCase() + nextThemeName.slice(1);
 
     themeToggleBtn.title = `Switch to ${nextThemeName} Theme (Current: ${effectiveThemeDisplay})`;
   }
@@ -119,8 +139,8 @@ function setupEventListeners() {
     .addEventListener("change", handleTempChange);
   document.getElementById("prompt").addEventListener("keydown", (e) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        handleSubmit();
+      e.preventDefault();
+      handleSubmit();
     }
   });
 
@@ -174,7 +194,6 @@ async function handleSubmit() {
   // const submitIconContent = document.getElementById("submitIconContent"); // For changing icon
   const submitText = document.getElementById("submitText");
 
-
   showLoadingState(responseDiv, submitBtn, submitText); // Removed icon specific param
 
   try {
@@ -199,13 +218,23 @@ async function handleSubmit() {
 async function callGeminiAPI(apiKey, prompt, temperature) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.model}:generateContent?key=${apiKey}`;
   const contextualHistory = [];
-  for (let i = conversationHistory.length - 1; i >= 0 && contextualHistory.length < (3*2) ; i--) {
+  for (
+    let i = conversationHistory.length - 1;
+    i >= 0 && contextualHistory.length < 3 * 2;
+    i--
+  ) {
     const item = conversationHistory[i];
     if (item.response) {
-      contextualHistory.unshift({ role: "model", parts: [{ text: item.response }] });
+      contextualHistory.unshift({
+        role: "model",
+        parts: [{ text: item.response }],
+      });
     }
     if (item.prompt) {
-      contextualHistory.unshift({ role: "user", parts: [{ text: item.prompt }] });
+      contextualHistory.unshift({
+        role: "user",
+        parts: [{ text: item.prompt }],
+      });
     }
   }
 
@@ -230,10 +259,22 @@ async function callGeminiAPI(apiKey, prompt, temperature) {
         stopSequences: [],
       },
       safetySettings: [
-        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
-        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
+        {
+          category: "HARM_CATEGORY_HARASSMENT",
+          threshold: "BLOCK_MEDIUM_AND_ABOVE",
+        },
+        {
+          category: "HARM_CATEGORY_HATE_SPEECH",
+          threshold: "BLOCK_MEDIUM_AND_ABOVE",
+        },
+        {
+          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          threshold: "BLOCK_MEDIUM_AND_ABOVE",
+        },
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+          threshold: "BLOCK_MEDIUM_AND_ABOVE",
+        },
       ],
     }),
   });
@@ -241,9 +282,9 @@ async function callGeminiAPI(apiKey, prompt, temperature) {
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
     if (errorData.error && errorData.error.message) {
-        throw new Error(errorData.error.message);
+      throw new Error(errorData.error.message);
     } else if (errorData.message) {
-        throw new Error(errorData.message);
+      throw new Error(errorData.message);
     }
     throw new Error(`API error: ${response.status} ${response.statusText}`);
   }
@@ -267,9 +308,9 @@ async function copyToClipboard() {
   const responseDiv = document.getElementById("response");
   let textToCopy = "";
   if (responseDiv.querySelector(".response-text")) {
-      textToCopy = responseDiv.querySelector(".response-text").innerText;
+    textToCopy = responseDiv.querySelector(".response-text").innerText;
   } else {
-      textToCopy = responseDiv.innerText;
+    textToCopy = responseDiv.innerText;
   }
   if (!textToCopy.trim()) {
     showMessage("Nothing to copy", "info");
@@ -301,9 +342,9 @@ function displayResponse(responseText) {
 function formatResponseText(text) {
   let html = text;
   html = html.replace(/```(\w*)\n([\s\S]*?)\n```/g, (match, lang, code) => {
-      const languageClass = lang ? `language-${lang}` : '';
-      const escapedCode = code.replace(/</g, "<").replace(/>/g, ">");
-      return `<pre><code class="${languageClass}">${escapedCode}</code></pre>`;
+    const languageClass = lang ? `language-${lang}` : "";
+    const escapedCode = code.replace(/</g, "<").replace(/>/g, ">");
+    return `<pre><code class="${languageClass}">${escapedCode}</code></pre>`;
   });
   html = html.replace(/`([^`]+?)`/g, (match, code) => {
     const escapedCode = code.replace(/</g, "<").replace(/>/g, ">");
@@ -314,7 +355,10 @@ function formatResponseText(text) {
   html = html.replace(/^### (.*$)/gm, "<h6>$1</h6>");
   html = html.replace(/^## (.*$)/gm, "<h5>$1</h5>");
   html = html.replace(/^# (.*$)/gm, "<h4>$1</h4>");
-  html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(
+    /\[(.*?)\]\((.*?)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
   html = html.replace(/\n\n/g, "<br><br>");
   return html;
 }
@@ -322,14 +366,14 @@ function formatResponseText(text) {
 function showMessage(message, type) {
   const messageDiv = document.getElementById("messages");
   messageDiv.innerHTML = ""; // Clear previous
-  const messageElement = document.createElement('div');
+  const messageElement = document.createElement("div");
   messageElement.className = `message ${type}`;
   messageElement.textContent = message;
   messageDiv.appendChild(messageElement);
 
   setTimeout(() => {
     if (messageElement.parentNode === messageDiv) {
-        messageDiv.removeChild(messageElement);
+      messageDiv.removeChild(messageElement);
     }
   }, 4000);
 }
@@ -341,18 +385,24 @@ function updateHistoryUI() {
   historyContainer.innerHTML = conversationHistory
     .slice()
     .reverse()
-    .map(
-      (item, indexInReversedArray) => {
-        const originalIndex = conversationHistory.length - 1 - indexInReversedArray;
-        return `
-      <div class="history-item" data-index="${originalIndex}" title="Load: ${item.prompt.substring(0,100)}">
+    .map((item, indexInReversedArray) => {
+      const originalIndex =
+        conversationHistory.length - 1 - indexInReversedArray;
+      return `
+      <div class="history-item" data-index="${originalIndex}" title="Load: ${item.prompt.substring(
+        0,
+        100
+      )}">
         <div class="history-content">
           <div class="history-prompt">${item.prompt.substring(0, 40)}${
-            item.prompt.length > 40 ? "..." : ""
-          }</div>
+        item.prompt.length > 40 ? "..." : ""
+      }</div>
           <div class="history-time">${new Date(
             item.timestamp
-          ).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+          ).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}</div>
         </div>
         <button class="delete-history icon-btn" data-index="${originalIndex}" title="Delete this chat">
           <span class="material-icons btn-icon">delete_outline</span>
@@ -390,7 +440,8 @@ function updateHistoryUI() {
 
   const historySection = document.getElementById("historySection");
   if (historySection) {
-    historySection.style.display = conversationHistory.length > 0 ? "block" : "none";
+    historySection.style.display =
+      conversationHistory.length > 0 ? "block" : "none";
   }
 }
 

@@ -8,26 +8,31 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <!-- Added Audiowide font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <header>
         <h1>
           <span class="logo">
+            <!-- This span now acts as a container for the image -->
             <img src="icons/google.png" alt="Gemini Logo" class="logo-img" />
           </span>
-          <!-- This remains as is, unless you want it as an image -->
-          <span>Gemini Flash</span>
+          <span class="logoFont">Gemini Flash</span>
         </h1>
         <div class="header-actions">
           <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme">
             <span class="material-icons" id="themeIcon">brightness_auto</span>
-            <!-- Default icon -->
           </button>
           <div class="model-badge">Preview 05-20</div>
         </div>
       </header>
-
       <div class="api-key-section">
         <input
           type="password"
