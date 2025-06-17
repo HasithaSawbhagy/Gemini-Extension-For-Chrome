@@ -21,7 +21,6 @@
       <header>
         <h1>
           <span class="logo">
-            <!-- This span now acts as a container for the image -->
             <img src="icons/google.png" alt="Gemini Logo" class="logo-img" />
           </span>
           <span class="logoFont">Gemini Flash</span>
@@ -68,6 +67,20 @@
           />
           <span class="temp-value" id="tempValue">0.7</span>
         </div>
+
+        <!-- Added section for including page content -->
+        <div class="settings-row page-content-toggle-row">
+          <label for="includePageContentToggle" class="page-content-label">
+            <span class="material-icons btn-icon">article</span>
+            Read Page
+          </label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="includePageContentToggle" />
+            <label class="slider" for="includePageContentToggle"></label>
+          </div>
+          <div id="pageContentStatus" class="page-content-status"></div>
+        </div>
+        <!-- End of added section -->
       </div>
 
       <div id="messages"></div>

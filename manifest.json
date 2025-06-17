@@ -1,14 +1,16 @@
 {
   "manifest_version": 3,
   "name": "Gemini 2.5 Flash Preview 05-20",
-  "version": "2.2.3",
+  "version": "3.0.0",
   "description": "Enhanced client for Gemini 2.5 Flash with conversation history and markdown support",
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
   },
   "permissions": [
     "storage",
-    "clipboardWrite"
+    "clipboardWrite",
+    "activeTab",
+    "scripting"
   ],
   "action": {
     "default_popup": "popup.html",

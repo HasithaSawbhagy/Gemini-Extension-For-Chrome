@@ -27,6 +27,9 @@
   --scrollbar-track-bg: var(--bg-secondary);
   --scrollbar-thumb-bg: #ced4da;
   --scrollbar-thumb-hover-bg: #adb5bd;
+  --toggle-switch-bg: #ccc;
+  --toggle-switch-bg-checked: var(--accent-color);
+  --toggle-switch-knob-bg: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -38,22 +41,22 @@
   --border-color: #495057;
   --accent-color: #0d6efd;
   --accent-hover: #0a58ca;
-  /* --accent-text-color: #ffffff; /* Stays same */
   --success-color: #20c997;
   --error-color: #fd7e14;
   --info-color: #66d9ef;
-  /* --info-text-color: #000; /* Stays same */
   --code-bg: #2c3034;
   --code-text: #f8f9fa;
   --icon-color: var(--text-secondary);
   --icon-hover-color: var(--text-primary);
-  /* --primary-btn-icon-color: var(--accent-text-color); /* Stays same */
   --history-item-hover-bg: #343a40;
   --history-item-hover-text: var(--text-primary);
   --history-time-color: var(--text-secondary);
   --scrollbar-track-bg: var(--bg-primary);
   --scrollbar-thumb-bg: #495057;
   --scrollbar-thumb-hover-bg: #6c757d;
+  --toggle-switch-bg: #495057; /* Darker background for toggle */
+  --toggle-switch-bg-checked: var(--accent-color);
+  --toggle-switch-knob-bg: var(--bg-secondary); /* Knob color in dark mode */
 }
 
 /* ====== GLOBAL STYLES ====== */
@@ -113,8 +116,8 @@ h1 {
   font-size: 1em; /* Inherit base size from h1 or set explicitly e.g., 16px */
   color: var(
     --text-primary
-  ); /* Or var(--accent-color) if you want it colored */
-  line-height: 1; /* Adjust if text is not vertically centered with image */
+  );
+  line-height: 1;
 }
 
 .header-actions {
@@ -190,12 +193,12 @@ button.icon-btn {
 }
 button.icon-btn:hover {
   background-color: var(--bg-tertiary);
-  border-color: var(--border-color); /* Show border on hover for definition */
+  border-color: var(--border-color);
 }
 button.icon-btn .btn-icon {
   /* Icon inside an icon-only button */
   color: var(--icon-color);
-  margin: 0; /* No gap if it's the only child */
+  margin: 0;
 }
 button.icon-btn:hover .btn-icon {
   color: var(--icon-hover-color);
@@ -203,14 +206,12 @@ button.icon-btn:hover .btn-icon {
 
 .btn-icon {
   /* For Material Icons in buttons */
-  font-size: 18px; /* Adjust Material Icon size */
+  font-size: 18px;
   line-height: 1; /* Ensure proper vertical alignment */
   color: inherit; /* Inherit color from button by default */
 }
-/* If icon is not the only child (i.e., has text next to it) */
 button span + .btn-icon,
 button .btn-icon + span {
-  /* gap is already handled by flex on button */
 }
 
 button:disabled,
@@ -271,6 +272,9 @@ textarea {
   background-color: var(--bg-secondary);
   padding: 10px;
   border-radius: 6px;
+  display: flex;
+  flex-direction: column; /* Stack settings rows vertically */
+  gap: 8px;
 }
 
 .settings-row {
@@ -313,6 +317,10 @@ textarea {
   cursor: pointer;
   border: 2px solid var(--bg-primary);
 }
+[data-theme="dark"] .settings-row input[type="range"]::-webkit-slider-thumb {
+  border: 2px solid var(--bg-secondary);
+}
+
 .settings-row input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
@@ -321,6 +329,10 @@ textarea {
   cursor: pointer;
   border: 2px solid var(--bg-primary);
 }
+[data-theme="dark"] .settings-row input[type="range"]::-moz-range-thumb {
+  border: 2px solid var(--bg-secondary);
+}
+
 
 .temp-value {
   width: 25px;
@@ -329,6 +341,81 @@ textarea {
   font-weight: 500;
   color: var(--text-secondary);
 }
+
+/* Styles for Page Content Toggle */
+.settings-row.page-content-toggle-row {
+  /* Inherits display: flex, align-items: center, gap: 8px from .settings-row */
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.page-content-label {
+  /* Inherits from .settings-row label */
+  flex-grow: 0;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  margin: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--toggle-switch-bg);
+  transition: 0.3s;
+  border-radius: 22px;
+}
+
+.toggle-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--toggle-switch-knob-bg);
+  transition: 0.3s;
+  border-radius: 50%; /* Circular knob */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: var(--toggle-switch-bg-checked);
+}
+
+.toggle-switch input:focus + .slider {
+  box-shadow: 0 0 1px var(--toggle-switch-bg-checked);
+}
+
+.toggle-switch input:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+.page-content-status {
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  margin-left: 8px;
+  flex-basis: 120px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 /* ====== MESSAGES ====== */
 #messages {
@@ -371,6 +458,11 @@ textarea {
 .submit-btn {
   width: 100%;
 }
+.submit-btn .spinner {
+  border-color: var(--accent-text-color);
+  border-top-color: transparent;
+}
+
 
 .response-header {
   display: flex;
@@ -413,14 +505,17 @@ textarea {
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
-button .spinner {
-  border-color: var(--accent-text-color); /* White for primary button */
+
+/* Default spinner in buttons that are NOT primary */
+button:not(.primary) .spinner {
+  border-color: var(--text-primary);
   border-top-color: transparent;
 }
 [data-theme="dark"] button:not(.primary) .spinner {
   border-color: var(--text-primary); /* For non-primary buttons in dark mode */
   border-top-color: transparent;
 }
+
 
 @keyframes spin {
   to {
@@ -532,12 +627,11 @@ button .spinner {
 }
 
 .history-item .delete-history {
-  /* This is an icon-btn */
   margin-left: 8px;
   flex-shrink: 0;
 }
 .history-item .delete-history .btn-icon {
-  font-size: 18px; /* Match other icons */
+  font-size: 18px;
 }
 
 /* ====== SCROLLBARS ====== */
@@ -562,7 +656,6 @@ button .spinner {
   font-family: "Material Icons";
   font-weight: normal;
   font-style: normal;
-  /* font-size: 24px; /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
