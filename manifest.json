@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Gemini 2.5 Flash Preview 05-20",
-  "version": "3.0.0",
-  "description": "Enhanced client for Gemini 2.5 Flash with conversation history and markdown support",
+  "name": "Gemini Client",
+  "version": "4.0.1",
+  "description": "Enhanced client for Google's Gemini models with model selection, history, and markdown support.",
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
   },
@@ -32,7 +32,7 @@
         "default": "Ctrl+Shift+G",
         "mac": "Command+Shift+G"
       },
-      "description": "Open Gemini"
+      "description": "Open Gemini Client"
     }
   }
 }

@@ -2,13 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Gemini 2.5 Flash</title>
+    <title>Gemini Flash Client</title> <!-- Simplified Title -->
     <link rel="stylesheet" href="styles.css" />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <!-- Added Audiowide font from Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -23,13 +22,13 @@
           <span class="logo">
             <img src="icons/google.png" alt="Gemini Logo" class="logo-img" />
           </span>
-          <span class="logoFont">Gemini Flash</span>
+          <span class="logoFont">Gemini Client</span> <!-- More general name -->
         </h1>
         <div class="header-actions">
           <button id="themeToggleBtn" class="icon-btn" title="Toggle Theme">
             <span class="material-icons" id="themeIcon">brightness_auto</span>
           </button>
-          <div class="model-badge">Preview 05-20</div>
+          <!-- Model badge removed, selection is now in settings -->
         </div>
       </header>
       <div class="api-key-section">
@@ -52,6 +51,18 @@
       </div>
 
       <div class="settings-panel">
+        <!-- NEW: Model Selection Dropdown -->
+        <div class="settings-row">
+          <label for="modelSelect">
+            <span class="material-icons btn-icon">memory</span> <!-- Icon for model -->
+            Model
+          </label>
+          <select id="modelSelect" name="modelSelect">
+            <option value="">-- Enter API Key --</option> <!-- Default if no key/models -->
+          </select>
+        </div>
+        <!-- End of Model Selection -->
+
         <div class="settings-row">
           <label for="temperature">
             <span class="material-icons btn-icon">tune</span>
@@ -68,7 +79,6 @@
           <span class="temp-value" id="tempValue">0.7</span>
         </div>
 
-        <!-- Added section for including page content -->
         <div class="settings-row page-content-toggle-row">
           <label for="includePageContentToggle" class="page-content-label">
             <span class="material-icons btn-icon">article</span>
@@ -80,7 +90,18 @@
           </div>
           <div id="pageContentStatus" class="page-content-status"></div>
         </div>
-        <!-- End of added section -->
+
+        <div class="settings-row model-search-toggle-row">
+          <label for="enableModelSearchToggle" class="model-search-label">
+            <span class="material-icons btn-icon">travel_explore</span>
+            Model Search
+          </label>
+          <div class="toggle-switch">
+            <input type="checkbox" id="enableModelSearchToggle" />
+            <label class="slider" for="enableModelSearchToggle"></label>
+          </div>
+          <div id="modelSearchStatus" class="model-search-status"></div>
+        </div>
       </div>
 
       <div id="messages"></div>
@@ -92,12 +113,15 @@
           spellcheck="true"
           rows="3"
         ></textarea>
-        <button id="submit" class="primary submit-btn">
-          <span class="material-icons btn-icon" id="submitIconContent"
-            >send</span
-          >
-          <span id="submitText">Get Response</span>
-        </button>
+        <div class="prompt-actions-row">
+          <button id="submit" class="primary submit-btn">
+            <span class="material-icons btn-icon" id="submitIconContent">send</span>
+            <span id="submitText">Get Response</span>
+          </button>
+          <button id="googleSearchBtn" class="icon-btn secondary" title="Search prompt on Google">
+            <span class="material-icons btn-icon">search</span>
+          </button>
+        </div>
       </div>
 
       <div class="response-header">
